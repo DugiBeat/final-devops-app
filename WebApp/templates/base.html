@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <title>{{ title or "Cyber Dashboard" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Logo" class="sidebar-logo">
+        <h2>-DevCyberDashBoard</h2>
+        <a href="/DugmaAppDash">📇 Contacts & Meeting</a>
+        <a href="/crawl">🧠 Domain Scanner</a>
+        <a href="/book-meeting">📅 Book Meeting</a>
+        <a href="/alerts">🚨 Security Alerts</a>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+<script>
+  window.onload = function () {
+    if (!localStorage.getItem("popupShown")) {
+      alert("👋 Welcome To Dugma FINAL DevOps PROJECT!\n\n🚀 CI/CD Pipeline for AWS K8S cluster with Jenkins, Ansible, and Terraform");
+      localStorage.setItem("popupShown", "true");
+    }
+  };
+</script>
+
+</body>
+</html>

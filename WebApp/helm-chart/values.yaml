@@ -1,0 +1,11 @@
+image:
+  repository: your-dockerhub-username/dugma-app
+  tag: latest
+
+flask:
+  port: 5052
+
+mongo:
+  image: mongo
+  port: 27017
+  db_name: contacts_app

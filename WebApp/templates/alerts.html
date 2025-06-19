@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>🚨 Latest Security Alerts</h1>
+<ul id="alertsList"></ul>
+
+<script>
+window.onload = async function() {
+    const res = await fetch("/api/alerts");
+    const data = await res.json();
+    const alerts = data.vulnerabilities || [];
+    const list = document.getElementById("alertsList");
+
+    alerts.forEach(alert => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${alert.cve.id}</strong>: ${alert.cve.descriptions[0]?.value || "No description"}`;
+        list.appendChild(li);
+    });
+}
+</script>
+{% endblock %}

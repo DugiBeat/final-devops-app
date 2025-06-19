@@ -1,0 +1,9 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+mysql-connector-python==8.4.0
+pymongo==4.7.3
+requests==2.32.3
+Faker==25.3.0
+openai==1.30.5
+python-whois==0.7.3
+

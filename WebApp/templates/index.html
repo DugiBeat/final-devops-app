@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Contact List</h2>
+  <table id="contactsTable">
+    <thead>
+      <tr>
+        <th>#</th><th>Photo</th><th>Name</th><th>Phone</th><th>Email</th><th>Gender</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact in contacts %}
+      <tr>
+        <td>{{ contact.number }}</td>
+        <td><img src="{{ url_for('static', filename='images/' + contact.photo) }}" alt="photo" width="50" height="50"></td>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>{{ contact.email }}</td>
+        <td>{{ contact.gender }}</td>
+        <td>
+          <a href="/editContact/{{ contact.number }}">Edit</a> |
+          <a href="#" onclick="deleteContact('{{ contact.number }}')">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Scheduled Meetings</h2>
+  <input type="text" id="meetingFilter" placeholder="Filter meetings..." />
+  <table id="meetingsTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Name</th>
+        <th onclick="sortTable(1)">Email</th>
+        <th onclick="sortTable(2)">Date/Time</th>
+        <th>Reason</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in meetings %}
+      <tr>
+        <td>{{ m.name }}</td>
+        <td>{{ m.email }}</td>
+        <td>{{ m.datetime }}</td>
+        <td>{{ m.reason }}</td>
+        <td>{{ m.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    document.getElementById("meetingFilter").addEventListener("keyup", function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#meetingsTable tbody tr");
+      rows.forEach(row => {
+        const match = Array.from(row.cells).some(cell =>
+          cell.textContent.toLowerCase().includes(filter)
+        );
+        row.style.display = match ? "" : "none";
+      });
+    });
+
+    function sortTable(n) {
+      const table = document.getElementById("meetingsTable");
+      let switching = true, dir = "asc", switchcount = 0;
+
+      while (switching) {
+        switching = false;
+        const rows = table.rows;
+        for (let i = 1; i < rows.length - 1; i++) {
+          let x = rows[i].getElementsByTagName("TD")[n];
+          let y = rows[i + 1].getElementsByTagName("TD")[n];
+          let shouldSwitch = false;
+
+          if ((dir === "asc" && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) ||
+              (dir === "desc" && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          switchcount++;
+        } else if (switchcount === 0 && dir === "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+
+    function deleteContact(id) {
+      fetch(`/api/contact/${id}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => location.reload());
+    }
+  </script>
+{% endblock %}

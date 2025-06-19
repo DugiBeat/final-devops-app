@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: contacts_app
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  flask:
+    build: .
+    container_name: dugma-app
+    ports:
+      - "5052:5052"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    entrypoint: ["./wait-for-mysql.sh"]
+    command: ["python", "app.py"]
+
+volumes:
+  mysql-data:

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Domain Scanner{% endblock %}
+{% block content %}
+<h2>🕵️ WHOIS Domain Scanner</h2>
+<form id="crawlerForm">
+    <input type="text" id="domainInput" placeholder="Enter a domain (example.com)" required>
+    <button type="submit">Scan</button>
+</form>
+
+<div id="whoisResults" style="margin-top:20px;"></div>
+
+<script>
+document.getElementById("crawlerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const domain = document.getElementById("domainInput").value;
+    const res = await fetch("/api/scan", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ domain })
+    });
+    const data = await res.json();
+    let output = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    document.getElementById("whoisResults").innerHTML = output;
+});
+</script>
+{% endblock %}

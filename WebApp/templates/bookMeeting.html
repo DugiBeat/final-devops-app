@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Book a Cybersecurity Meeting</h2>
+  <form id="bookingForm">
+    <label>Name: <input type="text" name="name" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Date/Time: <input type="datetime-local" name="datetime" required></label><br>
+    <label>Reason: <textarea name="reason" required></textarea></label><br>
+    <button type="submit">Book</button>
+  </form>
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = new FormData(this);
+      const data = Object.fromEntries(form.entries());
+      const res = await fetch('/api/book-meeting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      document.getElementById('response').innerText = result.message || result.error;
+    });
+  </script>
+{% endblock %}

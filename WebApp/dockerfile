@@ -1,0 +1,16 @@
+FROM python:3.13.3-slim
+WORKDIR /app
+COPY wait-for-mysql.sh .
+RUN chmod +x wait-for-mysql.sh
+# install netcat-openbsd
+RUN apt-get update && apt-get install -y netcat-openbsd
+# copy the app
+COPY . .
+# install requirements and run the app
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["python", "app.py"]
+
+
+
+
