@@ -83,7 +83,20 @@ pipeline {
       }
     }
   }
+ stage('Fetch LoadBalancer IPs') {
+      steps {
+        sh '''
+        echo "Flask App Service:"
+        kubectl get svc -n flask
 
+        echo "Grafana Service:"
+        kubectl get svc -n monitoring
+
+        echo "Prometheus Service:"
+        kubectl get svc -n monitoring
+     '''
+  }
+}
   post {
     success {
       echo "✅ All components deployed successfully!"
