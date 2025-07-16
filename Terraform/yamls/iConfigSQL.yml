@@ -1,0 +1,132 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  vars:
+    db_name: "dugems_flask_db"
+    db_user: "jenkins_dugems"
+    db_password: "123456"
+    db_host: "localhost"
+    db_root_password: "admin"
+    report_file: "/tmp/jenkins_credentials.json"
+    
+  
+  tasks:
+    - name: Wait for SSH connection
+      ansible.builtin.wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        delay: 5
+        timeout: 300
+
+    - name: Check if MySQL is installed
+      command: which mysql
+      register: mysql_check1
+      failed_when: false
+      changed_when: false
+
+    - name: Install MySQL Server
+      apt:
+        name: 
+          - mysql-server
+          - python3-pymysql
+        state: present
+        update_cache: yes
+      when: mysql_check1.rc != 0
+      async: 600  # Allow 10 minutes for completion
+      poll: 10    # Check every 10 seconds 
+
+    - name: Verify MySQL Installation
+      block:
+        - name: Check MySQL service status
+          systemd:
+            name: mysql
+            state: started
+            enabled: yes
+      rescue:
+        - name: Troubleshoot MySQL Installation
+          debug:
+            msg: "MySQL installation may have encountered an issue. Please check manually."
+        
+        - name: Ensure MySQL is started
+          systemd:
+           name: mysql
+           state: started
+           enabled: yes
+
+    - name: secure mariadb and set root password
+      become: yes
+      expect:
+        command: mysql_secure_installation
+        responses:
+          'Enter current password for root': ''  # Empty if there's no current root password
+          'Set root password': 'y'  # Yes, we want to set a root password
+          'New password': 'admin'  # Replace with your desired root password
+          'Re-enter new password': 'admin'  # Re-enter the new password for confirmation
+          'Remove anonymous users': 'y'
+          'Disallow root login remotely': 'y'
+          'Remove test database': 'y'
+          'Reload privilege tables now': 'y'
+        timeout: 1
+      register: secure_mariadb
+      failed_when: "'... Failed!' in secure_mariadb.stdout_lines"
+
+    - name: Create database
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        login_host: "{{ db_host }}"
+      register: create_db_output
+
+    - name: Create database user
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        login_host: "{{ db_host }}"
+      register: create_user_output
+
+    - name: Grant privileges to user
+      mysql_user:
+        name: "{{ db_user }}"
+        host: "%"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        login_host: "{{ db_host }}"
+      register: grant_privileges_output
+
+    - name: Flush privileges
+      mysql_user:
+        name: "{{ db_user }}"
+        state: reloaded
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        login_host: "{{ db_host }}"
+      register: flush_privileges_output
+
+    - name: Combine MySQL task outputs into a single summary
+      set_fact:
+        mysql_summary: |
+          Database creation output: {{ create_db_output.stdout }}
+          User creation output: {{ create_user_output.stdout }}
+          Privileges granted output: {{ grant_privileges_output.stdout }}
+          Flush privileges output: {{ flush_privileges_output.stdout }}
+
+    - name: Add MySQL task summary to report file
+      lineinfile:
+        path: "{{ report_file }}"
+        line: "{{ mysql_summary }}"
+        create: yes
+        insertafter: EOF  # Append to the end of the file
+
+    - name: Print the updated file content
+      debug:
+        msg: "{{ lookup('file', report_file) }}"

@@ -1,0 +1,173 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+
+    - name: Check if Jenkins is installed
+      shell: dpkg -l | grep jenkins
+      register: jenkins_check
+      ignore_errors: true
+
+    - name: Install prerequisites (Java)
+      apt:
+        name: openjdk-17-jdk
+        state: present
+        update_cache: yes
+      when: jenkins_check.rc != 0
+
+    - name: Add Jenkins repository key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+      when: jenkins_check.rc != 0
+
+    - name: Add Jenkins repository
+      apt_repository:
+        repo: "deb http://pkg.jenkins.io/debian-stable binary/"
+        state: present
+      when: jenkins_check.rc != 0
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+        update_cache: yes
+      when: jenkins_check.rc != 0
+
+    - name: Enable Jenkins service
+      systemd:
+        name: jenkins
+        enabled: yes
+        state: started
+      register: jenkins_start_result
+      failed_when: false
+
+
+    - name: Wait for Jenkins service to start
+      wait_for:
+        path: "/run/systemd/units/invocation:jenkins.service"
+        state: present
+        delay: 5
+        timeout: 180
+      register: jenkins_service_ready
+      ignore_errors: yes
+      when: jenkins_start_result is defined
+
+    - name: Check Jenkins service status
+      shell: systemctl status jenkins.service
+      register: jenkins_status
+      failed_when: false
+      changed_when: false
+      when: jenkins_service_ready is succeeded or jenkins_service_ready is failed
+
+    - name: Display Jenkins service status
+      debug:
+        msg: "{{ jenkins_status.stdout_lines }}"
+      when: jenkins_status is defined
+
+    - name: Collect Jenkins service logs
+      shell: journalctl -xeu jenkins.service | tail -n 50
+      register: jenkins_logs
+      failed_when: false
+      changed_when: false
+ 
+    - name: Display Jenkins service logs
+      debug:
+        msg: "{{ jenkins_logs.stdout_lines }}"
+
+ # Configuration 
+
+    - name: Ensure Jenkins user exists
+      user:
+        name: jenkins
+        state: present
+
+    - name: Add Jenkins to the sudoers file
+      copy:
+        dest: /etc/sudoers.d/jenkins
+        content: "jenkins ALL=(ALL) NOPASSWD: ALL"
+        mode: '0440'
+
+    - name: Validate sudoers file
+      command: visudo -cf /etc/sudoers.d/jenkins
+      register: sudoers_check
+      changed_when: false
+
+    - name: Set permissions on Jenkins workspace
+      file:
+        path: "/var/lib/jenkins/workspace/your-repo"
+        owner: jenkins
+        group: jenkins
+        state: directory
+        mode: '0755'
+
+    - name: Display validation result
+      debug:
+        msg: "{{ sudoers_check.stdout }}"
+
+    - name: Confirm Jenkins is up and running
+      debug:
+        msg: "Jenkins is on the air! Access it at: http://{{ ansible_host }}:8080"
+      when: jenkins_status.stdout == "active"
+
+    - name: Wait for Jenkins to initialize
+      wait_for:
+        path: /var/lib/jenkins/secrets/initialAdminPassword
+        state: present
+        delay: 3
+        timeout: 120
+      ignore_errors: yes
+      register: jenkins_ready
+
+    - name: Get Jenkins initial admin password
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_password
+      ignore_errors: true
+      when: jenkins_ready is succeeded
+
+    - name: Display Jenkins initial admin password
+      debug:
+        msg: "Jenkins initial admin password: {{ jenkins_password.stdout }}"
+      when: jenkins_password is defined and jenkins_password.stdout is defined and jenkins_password.stdout != ""
+
+    - name: Create empty credentials file
+      copy:
+        content: |
+          {
+           "jenkins_initial_password": "pending - Jenkins still initializing",
+           "jenkins_install_date": "{{ ansible_date_time.iso8601 }}"
+           }
+        dest: /tmp/jenkins_credentials.json
+      when: jenkins_ready is failed
+   
+    - name: Retrieve Jenkins Initial Admin Password
+      block:
+        - name: Check Jenkins initial admin password file
+          slurp:
+            src: /var/lib/jenkins/secrets/initialAdminPassword
+          register: jenkins_initial_password
+          ignore_errors: yes
+
+    - name: Write password to a JSON file for Terraform
+      copy:
+        content: |
+          {
+            "jenkins_initial_password": "{{ jenkins_initial_password['content'] | b64decode if jenkins_initial_password is success else 'not_available' }}",
+            "jenkins_install_date": "{{ ansible_date_time.iso8601 }}"
+          }
+        dest: /tmp/jenkins_credentials.json
+      when: jenkins_initial_password is defined and jenkins_initial_password is success
+          
+    - name: Check if credentials file exists
+      stat:
+        path: /tmp/jenkins_credentials.json
+      register: credentials_file
+
+    - name: Ensure file permissions are secure
+      file:
+        path: /tmp/jenkins_credentials.json
+        mode: '0600'
+        owner: root
+        group: root
+      when: credentials_file.stat.exists
