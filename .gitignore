@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Python
+*.pyc
+__pycache__/
+.venv/
+.env
+
+# Helm
+*.tgz
+charts/
