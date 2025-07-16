@@ -49,31 +49,7 @@
       until: plugin_result is success
       ignore_errors: yes
 
-    - name: Create AWS Access Key Credential
-      community.general.jenkins_script:
-        url: "{{ jenkins_url }}"
-        user: "{{ jenkins_admin_username }}"
-        password: "{{ jenkins_admin_password }}"
-        script: |
-          import jenkins.model.*
-          import hudson.util.Secret
-          import com.cloudbees.plugins.credentials.impl.*
-          import com.cloudbees.plugins.credentials.*
-          import com.cloudbees.plugins.credentials.domains.*
-
-          def store = Jenkins.instance.getExtensionList(
-            'com.cloudbees.plugins.credentials.SystemCredentialsProvider'
-          )[0].getStore()
-
-          def credentials = new StringCredentialsImpl(
-            CredentialsScope.GLOBAL,
-            "AWS_KEY",
-            "AWS_S_KEY",
-            Secret.fromString("{{ aws_access_key }}")
-          )
-
-          store.addCredentials(Domain.global(), credentials)
-
+      
     - name: Display Jenkins initial admin password
       debug:
         msg: "Jenkins initial admin password: {{ jenkins_password.stdout }}"
