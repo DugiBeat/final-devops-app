@@ -74,20 +74,6 @@
 
           store.addCredentials(Domain.global(), credentials)
 
-
-    - name: Create Git credentials
-      community.general.jenkins_credential:
-        url: "{{ jenkins_url }}"
-        username: "{{ jenkins_admin_username }}"
-        password: "{{ jenkins_password.stdout }}"
-        credential_id: "GIT_CREDENTIALS"
-        username_secret: "DugiBeat"
-        password_secret: "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"
-        description: "Git Username and Password"
-        credential_type: "userpass"
-        treat_username_as_secret: true
-        scope: "GLOBAL"
-
     - name: Display Jenkins initial admin password
       debug:
         msg: "Jenkins initial admin password: {{ jenkins_password.stdout }}"
