@@ -7,7 +7,7 @@ pipeline {
     IMAGE_TAG        = 'latest'
     CLUSTER_NAME     = 'eks_mause'
     APP_NAME         = 'flask-app'
-    HELM_CHART_PATH  = 'webapp/helm/flask-app'
+    HELM_CHART_PATH  = 'WebApp/helm-chart/'
     GIT_REPO         = 'https://github.com/DugiBeat/final-devops-app.git'
   }
 
