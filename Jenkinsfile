@@ -56,33 +56,26 @@ pipeline {
       }
     }
 
-    stage('Helm Deploy Monitoring (Prometheus + Grafana)') {
-      steps {
-        sh '''
-          echo "📡 Setting up Helm repos..."
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update
+   stage('Helm Deploy Monitoring (Prometheus + Grafana)') {
+  steps {
+    sh '''
+      echo "📡 Setting up Helm repos..."
+      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      helm repo add grafana https://grafana.github.io/helm-charts
+      helm repo update
 
-          echo "📈 Installing Prometheus..."
-          helm upgrade --install prometheus prometheus-community/prometheus \
-            --namespace monitoring --create-namespace
+      echo "📈 Installing Prometheus..."
+      helm upgrade --install prometheus prometheus-community/prometheus \
+        --namespace monitoring --create-namespace
 
-          echo "📊 Installing Grafana..."
-          helm upgrade --install grafana grafana/grafana \
-            --namespace monitoring \
-            --set adminPassword='admin' \
-            --set service.type=LoadBalancer \
-            --set datasources."datasources\.yaml".apiVersion=1 \
-            --set datasources."datasources\.yaml".datasources[0].name=Prometheus \
-            --set datasources."datasources\.yaml".datasources[0].type=prometheus \
-            --set datasources."datasources\.yaml".datasources[0].url=http://prometheus-server.monitoring.svc.cluster.local \
-            --set datasources."datasources\.yaml".datasources[0].access=proxy \
-            --set datasources."datasources\.yaml".datasources[0].isDefault=true
-        '''
-      }
-    }
+      echo "📊 Installing Grafana..."
+      helm upgrade --install grafana grafana/grafana \
+        --namespace monitoring --create-namespace \
+        -f $HELM_CHART_PATH/../grafana-values.yaml
+    '''
   }
+}
+
  stage('Fetch LoadBalancer IPs') {
       steps {
         sh '''
