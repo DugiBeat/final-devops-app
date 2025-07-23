@@ -26,7 +26,7 @@ pipeline {
             aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
 
             echo "🐳 Building Docker image..."
-            docker build -t $ECR_REPO:$IMAGE_TAG ./webapp
+            docker build -t $ECR_REPO:$IMAGE_TAG ./WebApp
 
             echo "📤 Pushing image to ECR..."
             docker push $ECR_REPO:$IMAGE_TAG
