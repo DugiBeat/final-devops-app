@@ -2,8 +2,6 @@ pipeline {
   agent any
 
   environment {
-    AWS_ACCESS_KEY_ID     = credentials('aws-creds').username
-    AWS_SECRET_ACCESS_KEY = credentials('aws-creds').password
     AWS_REGION       = 'eu-north-1'
     ECR_REPO         = '423623847692.dkr.ecr.eu-north-1.amazonaws.com/finaldevop/dugems'
     IMAGE_TAG        = 'latest'
