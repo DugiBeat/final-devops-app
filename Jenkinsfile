@@ -90,7 +90,7 @@ pipeline {
         '''
       }
     }
-  }  // ← CLOSES `stages` block
+  }
 
   post {
     success {
@@ -100,4 +100,4 @@ pipeline {
       echo "❌ Deployment failed. Please check the logs."
     }
   }
-} // ← CLOSES `pipeline` block — THIS WAS MISSING
+}
