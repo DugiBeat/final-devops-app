@@ -71,7 +71,7 @@ pipeline {
           echo "📊 Installing Grafana..."
           helm upgrade --install grafana grafana/grafana \
             --namespace monitoring --create-namespace \
-            -f $HELM_CHART_PATH/../grafana-values.yaml
+            -f $HELM_CHART_PATH/grafana-values.yaml
         '''
       }
     }
