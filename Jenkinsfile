@@ -92,6 +92,21 @@ pipeline {
     }
   }
 
+  stage('Deployment Summary') {
+    steps {
+        sh '''
+        echo "✅ Deployment Summary:"
+        echo "Flask App URL:"
+        kubectl get svc -n flask dugma-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+
+        echo "Grafana URL:"
+        kubectl get svc -n monitoring grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+
+        echo "Prometheus URL:"
+        kubectl get svc -n monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+        '''
+     }
+    }
   post {
     success {
       echo "✅ All components deployed successfully!"
