@@ -90,10 +90,9 @@ pipeline {
         '''
       }
     }
-  }
 
-  stage('Deployment Summary') {
-    steps {
+    stage('Deployment Summary') {
+      steps {
         sh '''
         echo "✅ Deployment Summary:"
         echo "Flask App URL:"
@@ -105,8 +104,10 @@ pipeline {
         echo "Prometheus URL:"
         kubectl get svc -n monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
         '''
-     }
+      }
     }
+  }
+
   post {
     success {
       echo "✅ All components deployed successfully!"
