@@ -19,8 +19,14 @@ spec:
             - containerPort: {{ .Values.flask.port }}
           env:
             - name: DATABASE_TYPE
-              value: "MONGO"
-            - name: MONGO_URI
-              value: "mongodb://mongo-service:27017/"
-            - name: MONGO_DB_NAME
-              value: "{{ .Values.mongo.db_name }}"
+              value: "MYSQL"
+            - name: DB_HOST
+              value: "mysql-service"
+            - name: DB_PORT
+              value: "{{ .Values.mysql.port }}"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              value: "{{ .Values.mysql.root_password }}"
+            - name: DB_NAME
+              value: "{{ .Values.mysql.db_name }}"
