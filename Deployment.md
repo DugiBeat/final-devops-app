@@ -331,6 +331,9 @@ git add . && git commit -m "Update" && git push
 ./Cleanup.sh
 
 # Manual cleanup if needed
+# 1. delete aws-auth from kubectl 
+kubectl delete configmap aws-auth -n kube-system
+# 2.terrafom destroy action
 terraform destroy -auto-approve
 ```
 
