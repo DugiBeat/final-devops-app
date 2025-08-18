@@ -76,34 +76,23 @@ pipeline {
         '''
     }
 }
-
-    stage('Fetch LoadBalancer IPs') {
-      steps {
-        sh '''
-          echo "Flask App Service:"
-          kubectl get svc -n flask
-
-          echo "Grafana Service:"
-          kubectl get svc -n monitoring
-
-          echo "Prometheus Service:"
-          kubectl get svc -n monitoring
-        '''
-      }
-    }
-
+    
     stage('Deployment Summary') {
       steps {
         sh '''
-        echo "✅ Deployment Summary:"
-        echo "Flask App URL:"
-        kubectl get svc -n flask dugma-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+            echo "✅ Deployment Summary:"
 
-        echo "Grafana URL:"
-        kubectl get svc -n monitoring grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+            # Fetch and display the Flask App LoadBalancer URL
+            echo "Flask App URL:"
+            kubectl get svc -n flask dugma-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
 
-        echo "Prometheus URL:"
-        kubectl get svc -n monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+            # Fetch and display the Grafana LoadBalancer URL
+            echo "Grafana URL:"
+            kubectl get svc -n monitoring grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+
+            # Fetch and display the Prometheus LoadBalancer URL
+            echo "Prometheus URL:"
+            kubectl get svc -n monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
         '''
       }
     }
