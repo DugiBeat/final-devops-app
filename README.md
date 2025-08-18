@@ -1,4 +1,4 @@
-# Final DevOps Cyber WebApp Project
+# Final DevOps Project - Cyber WebApp 
 
 This project is a fully integrated DevOps-driven Flask web application with a cybersecurity layer,
 inspired by a foundational contact manager taught in class.
@@ -25,42 +25,41 @@ This extended version of the original course app includes:
 ---
 
 ## 📁 Project Structure
-final-devops-app/
-│
-├── webapp/ # Flask application with templates and static assets
-│ ├── helm-chart/ # Helm chart for deployment
-│ ├── static/
-│ ├── templates/
-│ ├── env file # .env for local dockerization
-│ ├── app.py
-│ ├── data_mongo.py
-│ ├── data_sql.py
-│ ├── docker-compose.yml
-│ ├── dockerfile
-│ ├── migrate.py
-│ ├── mongoDB.py
-│ ├── requirements.txt
-│ └── wait-for-mysql.sh #uses via docker compose file
-|
-├── terraform/ # Terraform IaC modules and configs
-| ├── main.tf # core infrastructure
-| ├── setup_provisioners.tf # Setup & conf components after core infrastructure has been created
-| ├── ssh_management.tf # Manage the lifecycle of SSH key pairs
-| ├── variables.tf
-| ├── output.tf
-│ └── install_packages.sh # Shell script for Jenkins EC2 bootstrap
-| |
-| ├── yamls/ # Ansible playbooks
-│   ├── iConfigJenkins.yml
-│   └── iConfigSQL.yml
-│
-├── Jenkinsfile # Jenkins pipeline definition
-├── AutoRun.sh - 
-├── Cleanup.sh
-├── Ssh_connect.sh #Provides an interactive way to establish an SSH connection
-└── README.md # You are here
 
----
+```text
+final-devops-app/
+├── webapp/                               # Flask application with templates and static assets
+│   ├── helm-chart/                       # Helm chart for deployment
+│   ├── static/
+│   ├── templates/
+│   ├── .env                              # .env for local dockerization
+│   ├── app.py
+│   ├── data_mongo.py
+│   ├── data_sql.py
+│   ├── docker-compose.yml
+│   ├── dockerfile
+│   ├── migrate.py
+│   ├── mongoDB.py
+│   ├── requirements.txt
+│   └── wait-for-mysql.sh                 # used via docker-compose file
+│
+├── terraform/                            # Terraform IaC modules and configs
+│   ├── main.tf                           # core infrastructure
+│   ├── setup_provisioners.tf             # Set & configure components after core infrastructure has been created
+│   ├── ssh_key_management.tf             # Manages the lifecycle of SSH key pairs
+│   ├── variables.tf
+│   ├── output.tf
+│   ├── install_packages.sh               # Shell script for Jenkins EC2 bootstrap
+│   └── yamls/                            # Ansible playbooks
+│       ├── iConfigJenkins.yml
+│       └── iConfigSQL.yml
+│
+├── Jenkinsfile                           # Jenkins pipeline definition
+├── AutoRun.sh                            # Automates the entire process
+├── Cleanup.sh                            # Cleans up Terraform and AWS resources
+├── interactive_ssh_connect.sh            # Provides an interactive way to establish an SSH connection
+└── README.md - You are here...
+```
 
 ## ⚙️ How It Works
 
@@ -109,7 +108,8 @@ Grafana displays dashboards at `http://<grafana-lb-ip>:3000`
 ## 🙏 Contributors
 
 - **[@Shashkist](https://github.com/Shashkist)** – Instructor and author of the original contact management app used in class
-
+- **[@fullstackjava082023](https://github.com/fullstackjava082023)** – files of the original contact management app used in class 
+  
 ---
 
 ## 📬 Contact

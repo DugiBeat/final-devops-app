@@ -7,7 +7,7 @@ variable "vpc_name" {
 }
 
 variable "cluster_name" {
-  default = "EKSmause"
+  default = "eks_mause"
 }
 
 variable "jenkins_type" {

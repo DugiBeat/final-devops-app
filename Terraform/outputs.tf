@@ -1,52 +1,27 @@
-
-output "vpc_id" {
-  value = module.vpc.vpc_id
+# Terraform Outputs
+# ==============================
+output "project_summary" {
+  value = join("\n", [
+    "VPC ID: ${module.vpc.vpc_id}",
+    "Public Subnets: ${join(", ", module.vpc.public_subnets)}",
+    "ECR Repo URL: ${aws_ecr_repository.webapp.repository_url}",
+    "------------------------------------------------------------------",
+    "EKS Cluster Name: ${module.eks.cluster_name}",
+    "EKS Cluster Endpoint: ${module.eks.cluster_endpoint}",
+    "Kubeconfig Cmd: aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region}",
+    "Kubeconfig Apply Auth Cmd: kubectl apply -f ${local_file.aws_auth_configmap.filename}",
+    "Kubeconfig Clean Auth Cmd: kubectl delete configmap aws-auth -n kube-system",
+    "------------------------------------------------------------------",
+    "Jenkins Instance ID: ${aws_instance.jenkins_instance.id}",
+    "Private ec2 Key Path: ${path.module}/terraform-ec2-key.pem",
+    "Jenkins Security Group ID: ${aws_security_group.jenkins_sg.id}",
+    "Jenkins Instance Profile: ${aws_iam_instance_profile.jenkins_instance_profile.name}",
+    "Jenkins Role: ${aws_iam_role.jenkins_role.name}",
+    "Jenkins Role ARN: ${aws_iam_role.jenkins_role.arn}",
+    "Jenkins Public IP: ${aws_instance.jenkins_instance.public_ip}",
+    "Jenkins Private IP: ${aws_instance.jenkins_instance.private_ip}",
+    "Jenkins Elastic IP: ${aws_eip.jenkins_eip.public_ip}",
+    "Jenkins Dashboard URL: http://${aws_eip.jenkins_eip.public_ip}:8080",
+    "Jenkins Initial Password: ${trimspace(data.local_file.jenkins_password.content)}"
+  ])
 }
-
-output "public_subnets" {
-  value = module.vpc.public_subnets
-}
-
-output "eks_cluster_endpoint" {
-  description = "The endpoint of the EKS cluster"
-  value       = module.eks.cluster_endpoint
-}
-
-output "jenkins_public_ip" {
-  description = "The public IP of the Jenkins EC2 instance"
-  value       = aws_instance.jenkins_instance.public_ip
-}
-
-output "private_key_path" {
-  value = "${path.module}/terraform-ec2-key.pem"
-}
-
-output "ecr_webapp_repo_url" {
-  description = "WebApp ECR URL"
-  value       = aws_ecr_repository.webapp.repository_url
-}
-
-output "kubeconfig_cmd" {
-  value = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region}"
-}
-
-output "jenkins_dashboard_url" {
-  value = "http://${aws_instance.jenkins_instance.public_ip}:8080"
-}
-
-data "external" "jenkins_password" {
-  depends_on = [null_resource.ec2Update]
-
-  program = ["bash", "-c", <<EOT
-    PASS=$(ssh -o StrictHostKeyChecking=no -i ${var.private_key_path} ubuntu@${aws_instance.jenkins_instance.public_ip} "sudo cat /var/lib/jenkins/secrets/initialAdminPassword")
-    python3 -c "import json; print(json.dumps({'password': '$PASS'}))"
-  EOT
-  ]
-}
-
-output "jenkins_admin_password" {
-  value     = data.external.jenkins_password.result.password
-}
-
-
-
