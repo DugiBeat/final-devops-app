@@ -1,4 +1,4 @@
 apiVersion: v2
 name: dugma-devops
-description: A Flask + MongoDB deployment for DevOps Project
+description: A Flask + MySQL deployment for DevOps Project
 version: 0.1.0
