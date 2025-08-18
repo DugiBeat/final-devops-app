@@ -73,7 +73,11 @@ pipeline {
            helm upgrade --install grafana grafana/grafana \
               --namespace monitoring --create-namespace \
               -f $HELM_CHART_PATH/grafana-values.yaml
+
+           echo "🌐 Patching Prometheus service to LoadBalancer..."
+            kubectl patch svc prometheus-server --namespace monitoring --type='json' -p='[{"op": "replace", "path": "/spec/type", "value": "LoadBalancer"}]'
         '''
+        
     }
 }
     
