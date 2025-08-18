@@ -59,22 +59,23 @@ pipeline {
     stage('Helm Deploy Monitoring (Prometheus + Grafana)') {
       steps {
         sh '''
-          echo "📡 Setting up Helm repos..."
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update
+           echo "📡 Setting up Helm repos..."
+           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+           helm repo add grafana https://grafana.github.io/helm-charts
+           helm repo update
 
-          echo "📈 Installing Prometheus..."
-          helm upgrade --install prometheus prometheus-community/prometheus \
-            --namespace monitoring --create-namespace
+           echo "📈 Installing Prometheus..."
+           helm upgrade --install prometheus prometheus-community/prometheus \
+              --namespace monitoring --create-namespace \
+              --set server.service.type=LoadBalancer
 
-          echo "📊 Installing Grafana..."
-          helm upgrade --install grafana grafana/grafana \
-            --namespace monitoring --create-namespace \
-            -f $HELM_CHART_PATH/grafana-values.yaml
+           echo "📊 Installing Grafana..."
+           helm upgrade --install grafana grafana/grafana \
+              --namespace monitoring --create-namespace \
+              -f $HELM_CHART_PATH/grafana-values.yaml
         '''
-      }
     }
+}
 
     stage('Fetch LoadBalancer IPs') {
       steps {
