@@ -1,11 +1,32 @@
-image:
-  repository: your-dockerhub-username/dugma-app
-  tag: latest
-
-flask:
-  port: 5052
-
-mongo:
-  image: mongo
-  port: 27017
-  db_name: contacts_app
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dugma-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dugma
+  template:
+    metadata:
+      labels:
+        app: dugma
+    spec:
+      containers:
+        - name: dugma
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.flask.port }}
+          env:
+            - name: DATABASE_TYPE
+              value: "MYSQL"
+            - name: DB_HOST
+              value: "mysql-service"
+            - name: DB_PORT
+              value: "{{ .Values.mysql.port }}"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              value: "{{ .Values.mysql.root_password }}"
+            - name: DB_NAME
+              value: "{{ .Values.mysql.db_name }}"
