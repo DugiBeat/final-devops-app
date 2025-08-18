@@ -1,41 +1,25 @@
-# 🚀 Dugma FINAL DevOps PROJECT
-**Complete CI/CD Pipeline with Cybersecurity Dashboard**
+# 🚀 DEPLOYMENT GUIDE
+**Complete Deployment Instructions for Dugma DevOps Project**
 
-> *A Flask-based Cybersecurity Dashboard with full DevOps automation using Terraform, Ansible, Jenkins, EKS, and comprehensive monitoring.*
-
----
-
-## ⚠️ **Disclaimer**
-🏷️ This project is designed for cybersecurity enthusiasts and DevOps learning.
-
-📌 **I'm not responsible for incorrect usage of this application.**
-
-📌 **Recommended for testing, learning, and educational purposes only.**
+> *Step-by-step deployment guide for the Flask Cybersecurity Dashboard with full CI/CD automation pipeline.*
 
 ---
 
-## 🏗️ **Project Architecture Overview**
+## 📋 **Quick Reference**
 
-This project demonstrates a complete **Infrastructure as Code (IaC)** approach with:
+For complete project information, features, and overview, see the main [README.md](./README.md).
 
-```
-Developer → GitHub → Jenkins → ECR → EKS → Monitoring
-    ↑                                              ↓
-Terraform → Ansible → CI/CD Pipeline → Kubernetes → Grafana
-```
-
-### **🔧 Technology Stack**
-- **Infrastructure**: Terraform (AWS VPC, EC2, EKS, ECR)
-- **Configuration**: Ansible (Jenkins, MySQL setup)
-- **CI/CD**: Jenkins Pipeline
-- **Containerization**: Docker + ECR Registry
-- **Orchestration**: Kubernetes (EKS) + Helm Charts  
-- **Monitoring**: Prometheus + Grafana
-- **Application**: Flask (Python) with Cybersecurity features
+This deployment guide covers:
+- 🚀 **4 Deployment Methods** (Automated, Manual, Local, Docker)
+- ⚙️ **Prerequisites & Setup**  
+- 🔧 **Configuration Options**
+- 📊 **Monitoring & Access**
+- 🛠️ **Troubleshooting**
+- 🧹 **Cleanup Procedures**
 
 ---
 
-## 📁 **Repository Structure**
+## 📁 **Deployment Structure Reference**
 
 ```
 final-devops-app/
@@ -91,32 +75,16 @@ final-devops-app/
 
 ---
 
-## 🌟 **Application Features**
+## 🎯 **Deployment Methods Overview**
 
-### **1. 👥 Contact Management System**
-- **Add Contact**: `/addContact` - Create new contacts with validation
-- **Edit Contact**: `/editContact/<id>` - Modify existing contact information  
-- **View Contacts**: `/viewContacts` - Display all contacts with pagination
-- **Search Contacts**: Search by name via navbar search functionality
-- **Database Support**: MySQL or MongoDB (configurable via `.env`)
+Choose the deployment method that fits your needs:
 
-### **2. 🔍 Cybersecurity Domain Scanner (WHOIS)**
-- **Endpoint**: `POST /api/scan`
-- **Payload**: `{ "domain": "example.com" }`
-- **Features**: Passive OSINT tool for domain reconnaissance
-- **Returns**: Comprehensive WHOIS data and domain analysis
-
-### **3. 📅 Cybersecurity Expert Booking System**
-- **Book Meeting**: `POST /api/book-meeting` - Schedule expert consultations
-- **View Bookings**: `GET /api/bookings` - List all pending/approved meetings  
-- **Update Status**: `PUT /api/bookings/<booking_id>/status` - Approve/manage bookings
-- **Use Case**: Cybersecurity consultation scheduling system
-
-### **4. 🛡️ Security Alert Dashboard**
-- **Endpoint**: `GET /api/alerts`
-- **Data Source**: NIST National Vulnerability Database (NVD) API
-- **Features**: Real-time CVE vulnerability feeds
-- **Dashboard**: Live security alerts and threat intelligence
+| Method | Use Case | Time | Complexity |
+|--------|----------|------|------------|
+| **🤖 Automated** | Production deployment | ~15 mins | ⭐ Easy |
+| **🔧 Manual** | Learning/Understanding | ~30 mins | ⭐⭐⭐ Advanced |
+| **💻 Local** | Development/Testing | ~5 mins | ⭐⭐ Moderate |
+| **🐳 Docker** | Containerized testing | ~3 mins | ⭐⭐ Moderate |
 
 ---
 
