@@ -57,7 +57,7 @@ final-devops-app/
 ├── Jenkinsfile # Jenkins pipeline definition
 ├── AutoRun.sh - 
 ├── Cleanup.sh
-├── interactive_ssh_connect.sh #Provides an interactive way to establish an SSH connection
+├── Ssh_connect.sh #Provides an interactive way to establish an SSH connection
 └── README.md # You are here
 
 ---
