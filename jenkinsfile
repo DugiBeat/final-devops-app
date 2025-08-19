@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     AWS_REGION       = 'eu-north-1'
-    ECR_REPO         = '423623847692.dkr.ecr.eu-north-1.amazonaws.com/finaldevop/dugems'
+    ECR_REPO         = '423623847692.dkr.ecr.eu-north-1.amazonaws.com/dugma-webapp'
     IMAGE_TAG        = 'latest'
     CLUSTER_NAME     = 'eks_mause'
     APP_NAME         = 'flask-app'
@@ -93,3 +93,4 @@ pipeline {
     }
   }
 }
+
