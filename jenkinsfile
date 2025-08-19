@@ -7,7 +7,7 @@ pipeline {
     IMAGE_TAG        = 'latest'
     CLUSTER_NAME     = 'eks_mause'
     APP_NAME         = 'flask-app'
-    HELM_CHART_PATH  = 'webapp/helm/flask-app'
+    HELM_CHART_PATH  = 'WebApp/helm-chart/'
     GIT_REPO         = 'https://github.com/DugiBeat/final-devops-app.git'
   }
 
@@ -59,26 +59,44 @@ pipeline {
     stage('Helm Deploy Monitoring (Prometheus + Grafana)') {
       steps {
         sh '''
-          echo "📡 Setting up Helm repos..."
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update
+           echo "📡 Setting up Helm repos..."
+           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+           helm repo add grafana https://grafana.github.io/helm-charts
+           helm repo update
 
-          echo "📈 Installing Prometheus..."
-          helm upgrade --install prometheus prometheus-community/prometheus \
-            --namespace monitoring --create-namespace
+           echo "📈 Installing Prometheus..."
+           helm upgrade --install prometheus prometheus-community/prometheus \
+              --namespace monitoring --create-namespace \
+              --set server.service.type=LoadBalancer
 
-          echo "📊 Installing Grafana..."
-          helm upgrade --install grafana grafana/grafana \
-            --namespace monitoring \
-            --set adminPassword='admin' \
-            --set service.type=LoadBalancer \
-            --set datasources."datasources\.yaml".apiVersion=1 \
-            --set datasources."datasources\.yaml".datasources[0].name=Prometheus \
-            --set datasources."datasources\.yaml".datasources[0].type=prometheus \
-            --set datasources."datasources\.yaml".datasources[0].url=http://prometheus-server.monitoring.svc.cluster.local \
-            --set datasources."datasources\.yaml".datasources[0].access=proxy \
-            --set datasources."datasources\.yaml".datasources[0].isDefault=true
+           echo "📊 Installing Grafana..."
+           helm upgrade --install grafana grafana/grafana \
+              --namespace monitoring --create-namespace \
+              -f $HELM_CHART_PATH/grafana-values.yaml
+
+           echo "🌐 Patching Prometheus service to LoadBalancer..."
+            kubectl patch svc prometheus-server --namespace monitoring --type='json' -p='[{"op": "replace", "path": "/spec/type", "value": "LoadBalancer"}]'
+        '''
+        
+    }
+}
+    
+    stage('Deployment Summary') {
+      steps {
+        sh '''
+            echo "✅ Deployment Summary:"
+
+            # Fetch and display the Flask App LoadBalancer URL
+            echo "Flask App URL:"
+            kubectl get svc -n flask dugma-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+
+            # Fetch and display the Grafana LoadBalancer URL
+            echo "Grafana URL:"
+            kubectl get svc -n monitoring grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+
+            # Fetch and display the Prometheus LoadBalancer URL
+            echo "Prometheus URL:"
+            kubectl get svc -n monitoring prometheus-server -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
         '''
       }
     }
@@ -93,7 +111,3 @@ pipeline {
     }
   }
 }
-
-
-
-
