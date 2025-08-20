@@ -88,7 +88,7 @@ pipeline {
 
             # Fetch and display the Flask App LoadBalancer URL
             echo "Flask App URL:"
-            kubectl get svc -n flask dugma-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
+            kubectl get svc -n flask dugma-devops -o jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\\n"}'
 
             # Fetch and display the Grafana LoadBalancer URL
             echo "Grafana URL:"
@@ -112,3 +112,4 @@ pipeline {
   }
 
 }
+
