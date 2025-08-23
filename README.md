@@ -16,9 +16,6 @@ Built from the ground up on cloud infrastructure with modern deployment practice
   </a>
 </p>
 
-### 🎥 **DevOps Automation in Action**
-[![DevOps Demo](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k)
-
 > **Click the thumbnail to watch the complete automation workflow!**
 <div align="center">
   <a href="https://youtu.be/y2wSE54u35k">
