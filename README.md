@@ -4,8 +4,8 @@ This project is a fully integrated DevOps-driven Flask web application with a cy
 inspired by a foundational contact manager taught in class.
 Built from the ground up on cloud infrastructure with modern deployment practices, it includes automation, monitoring, and scalability.
 [![Watch the video](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k)
+ [Watch this video on YouTube](https://youtu.be/y2wSE54u35k)
 
-### [Deployment.md](https://github.com/DugiBeat/final-devops-app/blob/main/Deployment.md)
 
 ## 🚀 Project Overview
 
