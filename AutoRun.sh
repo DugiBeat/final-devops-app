@@ -59,13 +59,10 @@ if [[ "$tf_response" != "yes" ]]; then
   exit 0
 fi
 
-run_terraform() {
   cd ./Terraform || { echo "Terraform folder not found"; exit 1; }
 
   terraform init
-  terraform validate
-  terraform plan -out=tfplan
-  terraform apply tfplan -auto-approve
+  terraform apply -auto-approve
 
   if [ $? -eq 0 ]; then
     say "Terraform execution completed successfully."
@@ -74,49 +71,7 @@ run_terraform() {
     exit 1
   fi
 
-  cd ..
-
-  # Create summary file
-  SUMMARY="project-summary.txt"
-  echo "================= Project Deployment Summary =================" > "$SUMMARY"
-
-  # Jenkins info
-  JENKINS_URL=$(terraform -chdir=./Terraform output -raw jenkins_dashboard_url)
-  JENKINS_PASS=$(terraform -chdir=./Terraform output -raw jenkins_initial_password)
-  echo "✅ Jenkins Dashboard: $JENKINS_URL" >> "$SUMMARY"
-  echo "   Username: admin" >> "$SUMMARY"
-  echo "   Password: $JENKINS_PASS" >> "$SUMMARY"
-  echo "" >> "$SUMMARY"
-
-  # Wait for Grafana/Flask LoadBalancer IPs
-  say "Waiting for LoadBalancer IPs (Grafana/Flask)... this may take 2-3 minutes." 15
-  for svc in grafana dugma-service; do
-    for i in {1..30}; do
-      LB_IP=$(kubectl get svc -A -o jsonpath="{.items[?(@.metadata.name=='$svc')].status.loadBalancer.ingress[0].hostname}" 2>/dev/null)
-      if [[ -n "$LB_IP" ]]; then
-        echo "✅ $svc: http://$LB_IP" >> "$SUMMARY"
-        break
-      else
-        sleep 10
-      fi
-    done
-  done
-
-  # Get Grafana password
-  GRAFANA_PASS=$(kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" 2>/dev/null | base64 --decode)
-  if [[ -n "$GRAFANA_PASS" ]]; then
-    echo "   Grafana Admin Password: $GRAFANA_PASS" >> "$SUMMARY"
-  else
-    echo "   Grafana Admin Password: (Run kubectl manually)" >> "$SUMMARY"
-  fi
-
-  echo "===============================================================" >> "$SUMMARY"
-
-  say "Summary saved to $SUMMARY"
-}
-
-run_terraform
-
+  
 # Prompt for SSH into Jenkins
 say "Do you want to SSH into Jenkins now? (yes/no)" 15
 read -r ssh_response
