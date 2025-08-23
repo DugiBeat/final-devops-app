@@ -9,14 +9,12 @@ Built from the ground up on cloud infrastructure with modern deployment practice
 
 <p align="center">
   <a href="https://youtu.be/y2wSE54u35k">
-    <img src="https://img.shields.io/badge/🎬_Live_Demo-Watch_Now-red?style=for-the-badge&logo=youtube" alt="Live Demo">
+    <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Live Demo">
   </a>
   <a href="./DEPLOYMENT.md">
     <img src="https://img.shields.io/badge/📖_Deployment-Guide-blue?style=for-the-badge" alt="Deployment Guide">
   </a>
 </p>
-
-> **Click the thumbnail to watch the complete automation workflow!**
 <div align="center">
   <a href="https://youtu.be/y2wSE54u35k">
     <img src="https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg" alt="DevOps Deployment Demo" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
@@ -25,7 +23,7 @@ Built from the ground up on cloud infrastructure with modern deployment practice
   **🎬 Live Deployment QuickWalkthrough**  
   *See the complete automation workflow from infrastructure provisioning to monitoring setup*
   
-  [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/y2wSE54u35k)
+  [![YouTube]()](https://youtu.be/y2wSE54u35k)
 </div>
 
 
