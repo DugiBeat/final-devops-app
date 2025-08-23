@@ -6,8 +6,9 @@ Built from the ground up on cloud infrastructure with modern deployment practice
 
 
 <p align="center">
-  **🎬 Live Deployment QuickWalkthrough**
+<a>  **🎬 Live Deployment QuickWalkthrough**
 See the complete automation workflow from infrastructure provisioning to monitoring setup
+</a>
   <a href="https://youtu.be/y2wSE54u35k">
     <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Live Demo">
   </a>
