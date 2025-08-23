@@ -3,8 +3,21 @@
 This project is a fully integrated DevOps-driven Flask web application with a cybersecurity layer,
 inspired by a foundational contact manager taught in class.
 Built from the ground up on cloud infrastructure with modern deployment practices, it includes automation, monitoring, and scalability.
-[![Watch the video](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k)
- [Watch this video on YouTube](https://youtu.be/y2wSE54u35k)
+
+## 📺 **Live Demo**
+> **Watch the complete deployment in action!** This video demonstrates the entire automation workflow from start to finish.
+
+[![DevOps Automation Demo](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k "Click to watch the full deployment demonstration")
+
+### What You'll See in the Video:
+- 🏗️ **Terraform** infrastructure provisioning
+- ⚙️ **Ansible** server configuration  
+- 🔄 **Jenkins** CI/CD pipeline execution
+- ☸️ **Kubernetes** deployment via Helm
+- 📊 **Monitoring** stack setup (Prometheus + Grafana)
+- 🌐 **Live application** access and testing
+
+---
 
 
 ## 🚀 Project Overview
