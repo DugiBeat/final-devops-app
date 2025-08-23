@@ -4,20 +4,18 @@ This project is a fully integrated DevOps-driven Flask web application with a cy
 inspired by a foundational contact manager taught in class.
 Built from the ground up on cloud infrastructure with modern deployment practices, it includes automation, monitoring, and scalability.
 
-## 📺 **Live Demo**
-> **Watch the complete deployment in action!** This video demonstrates the entire automation workflow from start to finish.
+## 🚀 Complete DevOps Pipeline Demonstration
 
-[![DevOps Automation Demo](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k "Click to watch the full deployment demonstration")
-
-### What You'll See in the Video:
-- 🏗️ **Terraform** infrastructure provisioning
-- ⚙️ **Ansible** server configuration  
-- 🔄 **Jenkins** CI/CD pipeline execution
-- ☸️ **Kubernetes** deployment via Helm
-- 📊 **Monitoring** stack setup (Prometheus + Grafana)
-- 🌐 **Live application** access and testing
-
----
+<div align="center">
+  <a href="https://youtu.be/y2wSE54u35k">
+    <img src="https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg" alt="DevOps Deployment Demo" width="600" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+  </a>
+  
+  **🎬 Live Deployment Walkthrough**  
+  *See the complete automation workflow from infrastructure provisioning to monitoring setup*
+  
+  [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/y2wSE54u35k)
+</div>
 
 
 ## 🚀 Project Overview
