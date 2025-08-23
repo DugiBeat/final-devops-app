@@ -5,7 +5,21 @@ inspired by a foundational contact manager taught in class.
 Built from the ground up on cloud infrastructure with modern deployment practices, it includes automation, monitoring, and scalability.
 
 ## 🚀 Complete DevOps Pipeline Demonstration
+## 🎯 **Project Overview**
 
+<p align="center">
+  <a href="https://youtu.be/y2wSE54u35k">
+    <img src="https://img.shields.io/badge/🎬_Live_Demo-Watch_Now-red?style=for-the-badge&logo=youtube" alt="Live Demo">
+  </a>
+  <a href="./DEPLOYMENT.md">
+    <img src="https://img.shields.io/badge/📖_Deployment-Guide-blue?style=for-the-badge" alt="Deployment Guide">
+  </a>
+</p>
+
+### 🎥 **DevOps Automation in Action**
+[![DevOps Demo](https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg)](https://youtu.be/y2wSE54u35k)
+
+> **Click the thumbnail to watch the complete automation workflow!**
 <div align="center">
   <a href="https://youtu.be/y2wSE54u35k">
     <img src="https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg" alt="DevOps Deployment Demo" width="600" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
