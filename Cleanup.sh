@@ -11,7 +11,7 @@ say() {
 }
 
 say "------------------------------------------------------"
-say " Welcome to Dor Dugma's Final DevOps Project Cleanup"
+say " Welcome to Dugma's Final DevOps Project Cleanup"
 say "------------------------------------------------------"
 
 cd Terraform/ || { echo "Terraform folder not found"; exit 1; }
