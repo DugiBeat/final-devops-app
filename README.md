@@ -20,9 +20,10 @@ Built from the ground up on cloud infrastructure with modern deployment practice
   <a href="https://youtu.be/y2wSE54u35k">
     <img src="https://img.youtube.com/vi/y2wSE54u35k/maxresdefault.jpg" alt="DevOps Deployment Demo" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
   </a>
+ </div>
   **🎬 Live Deployment QuickWalkthrough**  
   See the complete automation workflow from infrastructure provisioning to monitoring setup*
-</div>
+
 
 
 ## 🚀 Project Overview
