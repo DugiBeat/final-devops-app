@@ -228,7 +228,7 @@ resource "aws_instance" "jenkins_instance" {
   key_name        = aws_key_pair.ec2_key.key_name
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
   subnet_id              = module.vpc.public_subnets[0] 
-  iam_instance_profile   = aws_iam_instance_profile.jenkins_instance_profile.name  # ✅ updated
+  iam_instance_profile   = aws_iam_instance_profile.jenkins_instance_profile.name  
 
   tags = {
     Terraform   = "true"
